@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +13,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject hudPanel;
     [SerializeField] private Text collectedCoinsText;
     [SerializeField] private Text currentCollectedCoinsText;
+
+    [SerializeField] private Text gyroscopeTextX;
+    [SerializeField] private Text gyroscopeTextZ;
     
     private void Awake()
     {
@@ -25,6 +30,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartCoroutine(SetGyroTextCoroutine());
+    }
+
+    private void SetGyroscopeText(Vector2 v)
+    {
+        gyroscopeTextX.text = v.x.ToString("N4");
+        gyroscopeTextZ.text = v.y.ToString("N4");
+    }
+    
     public void SetTimeLeft(int time)
     {
         timeLeftText.text = $"Time Left: {time}";
@@ -49,5 +65,14 @@ public class UIManager : MonoBehaviour
     public void SetActiveStartButton(bool status)
     {
         startButton.gameObject.SetActive(status);
+    }
+
+    private IEnumerator SetGyroTextCoroutine()
+    {
+        while (true)
+        {
+            SetGyroscopeText(BluetoothManager.Instance.Gyroscope);
+            yield return new WaitForSecondsRealtime(0.2f);
+        }
     }
 }

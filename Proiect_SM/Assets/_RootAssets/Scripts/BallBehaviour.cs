@@ -34,7 +34,7 @@ public class BallBehaviour : MonoBehaviour
         switch (other.tag)
         {
             case "Coin":
-                //BluetoothManager.Instance.SendBluetoothMessage(BluetoothManager.COIN_COLLECT_MSG_CODE);
+                BluetoothManager.Instance.SendBluetoothMessage(BluetoothManager.COIN_COLLECT_MSG_CODE);
                 Instantiate(coinParticles, other.transform.position, Quaternion.identity);
                 Destroy(other.gameObject);
                 GameManager.Instance.CollectCoin();

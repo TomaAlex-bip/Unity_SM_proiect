@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         UIManager.Instance.UpdateCollectedCoinsText(collectedCoins, totalCoins);
         UIManager.Instance.ShowGameOver(true);
-        //BluetoothManager.Instance.SendBluetoothMessage(BluetoothManager.GAME_OVER_MSG_CODE);
+        BluetoothManager.Instance.SendBluetoothMessage(BluetoothManager.GAME_OVER_MSG_CODE);
     }
 
     private IEnumerator PassTimeCoroutine()

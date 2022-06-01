@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +17,8 @@ public class MazeRotateScript : MonoBehaviour
     [SerializeField] private float manualRotationSpeed = 20f;
     [SerializeField] private float pivotRotationSpeed = 5f;
 
+    [SerializeField] private float multiplicationSliderGyro = 40f;
+
     private void Awake()
     {
         if (Instance == null)
@@ -28,13 +32,22 @@ public class MazeRotateScript : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartCoroutine(RotateCoroutine());
+    }
+
     private void Update()
     {
         var horizontalInput = Input.GetAxis("Horizontal");
         var verticalInput = Input.GetAxis("Vertical");
 
-        sliderX.value += verticalInput * manualRotationSpeed * Time.deltaTime;
-        sliderZ.value += -horizontalInput * manualRotationSpeed * Time.deltaTime;
+        // sliderX.value += verticalInput * manualRotationSpeed * Time.deltaTime;
+        // sliderZ.value += -horizontalInput * manualRotationSpeed * Time.deltaTime;
+
+
+        // sliderX.value = -BluetoothManager.Instance.Gyroscope.y * multiplicationSliderGyro;
+        // sliderZ.value = -BluetoothManager.Instance.Gyroscope.x * multiplicationSliderGyro;
         
         RotateXZAxis(sliderX.value, sliderZ.value);
     }
@@ -53,6 +66,35 @@ public class MazeRotateScript : MonoBehaviour
         
         mazePivot.rotation = Quaternion.Lerp(mazePivot.rotation, desiredRotation, pivotRotationSpeed * Time.deltaTime);
     }
-    
+
+    private IEnumerator RotateCoroutine()
+    {
+        var x = -BluetoothManager.Instance.Gyroscope.y;
+        var z = -BluetoothManager.Instance.Gyroscope.x;
+        while (true)
+        {
+            var dx = -BluetoothManager.Instance.Gyroscope.y;
+            var dz = -BluetoothManager.Instance.Gyroscope.x;
+
+            print(Mathf.Abs(x - dx));
+            print(Mathf.Abs(z - dz));
+            
+            if (Mathf.Abs(x - dx) < 0.5f)
+            {
+                x += dx;
+                x /= 2;
+            }
+            if (Mathf.Abs(z - dz) < 0.5f)
+            {
+                z += dz;
+                z /= 2;
+            }
+            
+            yield return new WaitForSecondsRealtime(0.1f);
+            
+            sliderX.value = x * multiplicationSliderGyro;
+            sliderZ.value = z * multiplicationSliderGyro;
+        }
+    }
     
 }
