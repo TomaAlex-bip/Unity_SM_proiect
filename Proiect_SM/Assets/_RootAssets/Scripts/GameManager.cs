@@ -46,6 +46,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
     public void StartGame()
     {
         UIManager.Instance.SetActiveStartButton(false);
