@@ -73,59 +73,33 @@ public class MazeRotateScript : MonoBehaviour
     {
         var x = -BluetoothManager.Instance.Gyroscope.y;
         var z = -BluetoothManager.Instance.Gyroscope.x;
-
-        // var xValues = new List<float>();
-        // var zValues = new List<float>();
+        var xValues = new List<float>();
+        var zValues = new List<float>();
+        
         while (true)
         {
-            // var dx = -BluetoothManager.Instance.Gyroscope.y;
-            // var dz = -BluetoothManager.Instance.Gyroscope.x;
-
-            // xValues.Add(dx);
-            // zValues.Add(dz);
-
-            //print(Mathf.Abs(x - dx));
-            //print(Mathf.Abs(z - dz));
-            
             var dx = -BluetoothManager.Instance.Gyroscope.y;
             var dz = -BluetoothManager.Instance.Gyroscope.x;
-            
-            
-             x += dx;
-             x /= 2;
-         
-             z += dz;
-             z /= 2;
-             
-            
-            // sliderX.value += x;
-            // sliderZ.value += z;
-            
+            xValues.Add(dx);
+            zValues.Add(dz);
+
             yield return new WaitForSecondsRealtime(0.02f);
+
+            var xMed = xValues[0];
+            for (var i = 1; i < xValues.Count; i++)
+            {
+                xMed += xValues[i];
+            }
+            x = xMed / xValues.Count;
+            xValues.Clear();
             
-            // for (var i = 1; i < xValues.Count; i++)
-            // {
-            //     if (Mathf.Abs(xValues[i - 1] - xValues[i]) > 0.4f)
-            //     {
-            //         continue;
-            //     }
-            //
-            //     x += xValues[i];
-            //     x /= 2f;
-            //
-            // }
-            //
-            // for (var i = 1; i < zValues.Count; i++)
-            // {
-            //     if (Mathf.Abs(zValues[i - 1] - zValues[i]) > 0.4f)
-            //     {
-            //         continue;
-            //     }
-            //     
-            //     z += zValues[i];
-            //     z /= 2f;
-            //     
-            // }
+            var zMed = zValues[0];
+            for (var i = 1; i < zValues.Count; i++)
+            {
+                zMed += zValues[i];
+            }
+            z = zMed / zValues.Count;
+            zValues.Clear();
             
             sliderX.value = x * multiplicationSliderGyro;
             sliderZ.value = z * multiplicationSliderGyro;
