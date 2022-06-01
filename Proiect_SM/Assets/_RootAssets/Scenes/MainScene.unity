@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f783726da1d5d2e43bb9a1e0acb7f534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTime: 20
+  gameTime: 120
 --- !u!4 &70266777
 Transform:
   m_ObjectHideFlags: 0
@@ -3017,6 +3017,7 @@ MonoBehaviour:
   maxAngle: 20
   manualRotationSpeed: 20
   pivotRotationSpeed: 2
+  multiplicationSliderGyro: 40
 --- !u!4 &2109430578
 Transform:
   m_ObjectHideFlags: 0
